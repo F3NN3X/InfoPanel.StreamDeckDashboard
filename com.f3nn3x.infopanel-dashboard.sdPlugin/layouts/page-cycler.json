@@ -1,0 +1,12 @@
+{
+	"$schema": "https://schemas.elgato.com/streamdeck/plugins/layout.json",
+	"controller": "Encoder",
+	"id": "com.f3nn3x.infopanel-dashboard.page-cycler",
+	"items": [
+		{ "key": "icon", "type": "pixmap", "rect": [12, 10, 36, 36] },
+		{ "key": "name", "type": "text", "rect": [58, 10, 134, 36], "font": { "size": 22, "weight": 700 }, "alignment": "left", "color": "#ffffff" },
+		{ "key": "bar", "type": "bar", "rect": [12, 58, 176, 10], "subtype": 4, "border_w": 0, "value": 0, "bar_bg_c": "#27272a", "bar_fill_c": "#fafafa" },
+		{ "key": "pos", "type": "text", "rect": [12, 72, 120, 24], "font": { "size": 16, "weight": 500 }, "alignment": "left", "color": "#a1a1aa" },
+		{ "key": "mark", "type": "pixmap", "rect": [160, 72, 28, 24] }
+	]
+}
