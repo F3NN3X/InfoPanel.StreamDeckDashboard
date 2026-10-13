@@ -31,8 +31,15 @@
 			"Tooltip": "Show a dashboard page. The key lights up while that page is showing.",
 			"PropertyInspectorPath": "ui/go-to-page.html",
 			"UserTitleEnabled": false,
-			"Controllers": ["Keypad"],
-			"States": [{ "Image": "imgs/actions/go-to-page/key", "TitleAlignment": "middle" }]
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/go-to-page/key",
+					"TitleAlignment": "middle"
+				}
+			]
 		},
 		{
 			"Name": "Next page",
@@ -41,8 +48,15 @@
 			"Tooltip": "Show the next dashboard page (wraps around).",
 			"PropertyInspectorPath": "ui/next-page.html",
 			"UserTitleEnabled": false,
-			"Controllers": ["Keypad"],
-			"States": [{ "Image": "imgs/actions/next-page/key", "TitleAlignment": "middle" }]
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/next-page/key",
+					"TitleAlignment": "middle"
+				}
+			]
 		},
 		{
 			"Name": "Previous page",
@@ -51,8 +65,15 @@
 			"Tooltip": "Show the previous dashboard page (wraps around).",
 			"PropertyInspectorPath": "ui/prev-page.html",
 			"UserTitleEnabled": false,
-			"Controllers": ["Keypad"],
-			"States": [{ "Image": "imgs/actions/prev-page/key", "TitleAlignment": "middle" }]
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/prev-page/key",
+					"TitleAlignment": "middle"
+				}
+			]
 		},
 		{
 			"Name": "Switch profile",
@@ -61,8 +82,15 @@
 			"Tooltip": "Force a dashboard profile on the kiosks, or choose Auto to clear the override.",
 			"PropertyInspectorPath": "ui/switch-profile.html",
 			"UserTitleEnabled": false,
-			"Controllers": ["Keypad"],
-			"States": [{ "Image": "imgs/actions/switch-profile/key", "TitleAlignment": "middle" }]
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/switch-profile/key",
+					"TitleAlignment": "middle"
+				}
+			]
 		},
 		{
 			"Name": "Auto-rotate",
@@ -71,8 +99,15 @@
 			"Tooltip": "Press to toggle page rotation. Hold for one second to go back to the saved setting.",
 			"PropertyInspectorPath": "ui/auto-rotate.html",
 			"UserTitleEnabled": false,
-			"Controllers": ["Keypad"],
-			"States": [{ "Image": "imgs/actions/auto-rotate/key", "TitleAlignment": "middle" }]
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/auto-rotate/key",
+					"TitleAlignment": "middle"
+				}
+			]
 		},
 		{
 			"Name": "Page cycler",
@@ -81,7 +116,9 @@
 			"Tooltip": "Turn the dial to move through dashboard pages (Stream Deck +).",
 			"PropertyInspectorPath": "ui/page-cycler.html",
 			"UserTitleEnabled": false,
-			"Controllers": ["Encoder"],
+			"Controllers": [
+				"Encoder"
+			],
 			"Encoder": {
 				"layout": "layouts/page-cycler.json",
 				"Icon": "imgs/actions/page-cycler/icon",
@@ -92,7 +129,12 @@
 					"Touch": "Toggle auto-rotate"
 				}
 			},
-			"States": [{ "Image": "imgs/actions/page-cycler/key", "TitleAlignment": "middle" }]
+			"States": [
+				{
+					"Image": "imgs/actions/page-cycler/key",
+					"TitleAlignment": "middle"
+				}
+			]
 		},
 		{
 			"Name": "Sensor value",
@@ -101,8 +143,15 @@
 			"Tooltip": "Show a live InfoPanel sensor with warning colours and a sparkline. Optionally opens a page when pressed.",
 			"PropertyInspectorPath": "ui/sensor-value.html",
 			"UserTitleEnabled": false,
-			"Controllers": ["Keypad"],
-			"States": [{ "Image": "imgs/actions/sensor-value/key", "TitleAlignment": "middle" }]
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/sensor-value/key",
+					"TitleAlignment": "middle"
+				}
+			]
 		}
 	]
 }
