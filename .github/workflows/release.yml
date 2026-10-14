@@ -1,0 +1,111 @@
+name: Release Build
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: npm
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Test
+      run: npm test
+
+    - name: Build Plugin
+      run: npm run build
+
+    - name: Validate Plugin
+      run: npm run validate
+
+    - name: Get Version from Project
+      id: get_version
+      shell: pwsh
+      run: |
+        $version = (Get-Content package.json -Raw | ConvertFrom-Json).version
+        $manifest = Get-Content "com.f3nn3x.infopanel-dashboard.sdPlugin/manifest.json" -Raw | ConvertFrom-Json
+        echo "package.json version: '$version', manifest Version: '$($manifest.Version)'"
+        if ([string]::IsNullOrWhiteSpace($version)) {
+            Write-Error "Could not find version in package.json"
+            exit 1
+        }
+        # Stream Deck formats the manifest version as X.Y.Z.W
+        if ($manifest.Version -ne "$version.0") {
+            Write-Error "manifest.json Version $($manifest.Version) does not match package.json version $version (expected $version.0)"
+            exit 1
+        }
+        echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+
+    - name: Check tag matches version
+      if: startsWith(github.ref, 'refs/tags/')
+      shell: pwsh
+      env:
+        REF_NAME: ${{ github.ref_name }}
+        VERSION: ${{ steps.get_version.outputs.VERSION }}
+      run: |
+        if ($env:REF_NAME -ne "v$env:VERSION") {
+            Write-Error "Tag $env:REF_NAME does not match package.json version $env:VERSION"
+            exit 1
+        }
+
+    - name: Package Plugin
+      run: npm run pack -- --force --no-update-check
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: com.f3nn3x.infopanel-dashboard-v${{ steps.get_version.outputs.VERSION }}
+        path: com.f3nn3x.infopanel-dashboard.streamDeckPlugin
+
+    - name: Get Current Date
+      id: get_date
+      shell: pwsh
+      run: echo "DATE=$(Get-Date -Format 'yyyy-MM-dd')" >> $env:GITHUB_OUTPUT
+
+    - name: Extract Release Notes
+      id: extract_release_notes
+      shell: pwsh
+      env:
+        VERSION: ${{ steps.get_version.outputs.VERSION }}
+      run: |
+        $version = $env:VERSION
+        $notes = @()
+        if (Test-Path "CHANGELOG.md") {
+            $recording = $false
+            foreach ($line in (Get-Content "CHANGELOG.md")) {
+                if ($line -match "^## \[?v?$([regex]::Escape($version))\]?") { $recording = $true; continue }
+                if ($recording -and $line -match "^## ") { break }
+                if ($recording) { $notes += $line }
+            }
+        }
+        $body = ($notes -join "`n").Trim()
+        if ([string]::IsNullOrWhiteSpace($body)) { $body = "InfoPanel Dashboard Stream Deck plugin v$version. Open the .streamDeckPlugin file to install." }
+        Set-Content -Path "release_notes.md" -Value $body
+        echo "NOTES_PATH=release_notes.md" >> $env:GITHUB_OUTPUT
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: com.f3nn3x.infopanel-dashboard.streamDeckPlugin
+        body_path: ${{ steps.extract_release_notes.outputs.NOTES_PATH }}
+        name: "v${{ steps.get_version.outputs.VERSION }} - ${{ steps.get_date.outputs.DATE }}"
+        draft: false
+        prerelease: false
