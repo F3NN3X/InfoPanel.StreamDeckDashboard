@@ -60,3 +60,10 @@ Layout:
 
 - The action icons and plugin/category images are simple placeholders drawn from lucide; replace them before publishing.
 - The plugin only reads from the dashboard server and posts to `/api/control/*`; it never edits the dashboard config.
+
+## Releasing
+
+1. Bump `version` in `package.json` and `Version` in `com.f3nn3x.infopanel-dashboard.sdPlugin/manifest.json` (Stream Deck format, `X.Y.Z.0`), and add a `CHANGELOG.md` entry if you keep one.
+2. Commit, then push a tag: `git tag vX.Y.Z && git push origin vX.Y.Z`.
+
+The *Release Build* workflow (`.github/workflows/release.yml`) runs the tests, builds, validates and packs the plugin, checks the tag matches `package.json`, and publishes `com.f3nn3x.infopanel-dashboard.streamDeckPlugin` to the GitHub release. It can also be run manually (workflow_dispatch) to build without releasing.
